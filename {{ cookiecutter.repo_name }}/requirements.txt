@@ -1,0 +1,3 @@
+opencensus-extension-azure-functions
+opencensus-ext-requests
+azure-functions-core
