@@ -1,1 +1,1 @@
-# azure-functions-cookiecutter
+# Azure Functions Cookiecutter
