@@ -1,29 +1,35 @@
 import os
 import json
 import logging
-import azure.functions as func
+
+# shared code
 from utils import helpers
-
-from opencensus.extension.azure.functions import OpenCensusExtension
-from opencensus.trace import config_integration
-config_integration.trace_integrations(['requests'])
-OpenCensusExtension.configure()
+# azure funcs
+import azure.functions as func
 
 
+# set up logging
+logger = logging.getLogger(__name__)
 
-def main(
-        req: func.HttpRequest,
-        context: func.Context
-    ) -> func.HttpResponse:
+try:
+    # API Management logging
+    from opencensus.ext.azure.log_exporter import AzureLogHandler
+    logger.addHandler(AzureLogHandler())
+except Exception as e:
+    logger.error(f'Failed to add Azure Log Handler: {e}')
     
-    logging.info(f'req: {req}')
-    logging.info(f'context: {context}')
+def main(req: func.HttpRequest) -> func.HttpResponse:
     
-    headers = {"my-http-header": "some-value"}
+    logger.info(f'req: {req}')
+    
+    headers = {
+        'my-http-header': 'some-value',
+        'Content-Type': 'application/json'
+        }
     
     name = req.params.get('name')
     
-    my_env_var = os.environ["my_env_var"]
+    my_env_var = os.getenv('my_env_var')
     
     if not name:
         try:
@@ -45,6 +51,10 @@ def main(
     
     else:
         return func.HttpResponse(
-             "Please pass a name on the query string or in the request body",
+             'Please pass a name on the query string or in the request body',
              headers=headers, status_code=400
         ) 
+        
+
+if __name__ == "__main__":
+    main()

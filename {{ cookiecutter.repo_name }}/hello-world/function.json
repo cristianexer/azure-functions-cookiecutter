@@ -1,10 +1,18 @@
 {
+    "scriptFile": "__init__.py",
     "disabled":false,
     "bindings":[
         {
-            "type": "bindingType",
+            "name": "req",
+            "type": "httpTrigger",
             "direction": "in",
-            "name": "myParamName"
+            "webHookType": "genericJson"
+        },
+
+        {
+            "name": "$return",
+            "type": "http",
+            "direction": "out"
         }
     ]
 }
