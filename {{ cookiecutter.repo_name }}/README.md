@@ -9,7 +9,7 @@ Run API locally
 func start --verbose
 ```
 
-
+Send request to the hello-world endpoint of the API
 ```bash
 curl --location --request GET 'http://localhost/api/hello-world?name=test'
 ```
